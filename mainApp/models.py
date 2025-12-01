@@ -1,4 +1,5 @@
 from django.db import models
+import uuid
 
 # Create your models here.
 class Categoria(models.Model):
@@ -66,4 +67,55 @@ class Insumo(models.Model):
 
     def __str__(self):
         return self.nombre
+    
 
+class Pedido(models.Model):
+    nombre_cliente = models.CharField(max_length=120)
+    correo_cliente = models.EmailField(blank=True, null=True)
+    telefono_cliente = models.CharField(max_length=20, blank=True, null=True)
+    producto_requerido = models.ForeignKey(Productos, on_delete=models.SET_NULL, blank=True, null=True)
+    cantidad_producto = models.PositiveIntegerField()
+    pedido_img_1 = models.ImageField(upload_to='pedidos/', null=True, blank=True)
+    pedido_img_2 = models.ImageField(upload_to='pedidos/', null=True, blank=True)
+    pedido_img_3 = models.ImageField(upload_to='pedidos/', null=True, blank=True)
+    
+    plataforma_pedido = [
+        ("whatsapp", "WhatsApp"),
+        ("instagram","Instagram"),
+        ("facebook", "Facebook"),
+        ("presencial", "Presencial"),
+        ("web", "Página Web"),
+        ("otro", "Otro")
+    ]
+
+    estado_pedido = [
+        ("solicitado", "Solicitado"),
+        ("aprobado", "Aprobado"),
+        ("en_proceso", "En proceso"),
+        ("realizada", "Realizada"),
+        ("entregada", "Entregada"),
+        ("finalizada", "Finalizada"),
+        ("cancelada", "Cancelada"),
+    ]
+
+    estado_pago = [
+        ("pendiente", "Pendiente"),
+        ("parcial", "Parcial"),
+        ("pagado", "Pagado")
+    ]
+
+    plataforma = models.CharField(choices= plataforma_pedido, max_length= 30)
+    estado_pedido_actual = models.CharField (choices= estado_pedido, max_length= 30)
+    estado_pago_actual = models.CharField(choices=estado_pago, max_length=30 )
+    fecha_pedido = models.DateTimeField(auto_now_add=True)
+    fecha_entrega = models.DateField(null=True, blank=True)
+    notas_adicionales = models.TextField(blank=True, null=True)
+    
+    token_seguimiento = models.UUIDField(
+        default=uuid.uuid4, 
+        editable=False, 
+        unique=True)
+
+    def __str__(self):
+        return f"Pedido #{self.id} de {self.nombre_cliente} - {self.producto_requerido.nombre} - (Origen: {self.plataforma})"
+    
