@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Categoria, Productos, Insumo
+from .models import Categoria, Productos, Insumo, Pedido
 
 # Register your models here.
 
@@ -16,3 +16,8 @@ class ProductosAdmin (admin.ModelAdmin):
 @admin.register(Insumo)
 class InsumoAdmin (admin.ModelAdmin):
     list_display = ["nombre", "marca", "color", "cantidad", "unidad"]
+
+@admin.register(Pedido)
+class PedidoAdmin (admin.ModelAdmin):
+    list_display = ["nombre_cliente", "producto_requerido", "cantidad_producto", "plataforma", "estado_pedido_actual", "estado_pago_actual", "fecha_pedido", "fecha_entrega"]
+    
