@@ -59,6 +59,7 @@ class Insumo(models.Model):
         ("morado", "Morado"),
         ("otro", "Otro"),
     ]
+    slug = models.SlugField(max_length=130, unique=True, null=True)
     tipo = models.CharField(max_length=30, choices=tipo_insumo)
     cantidad = models.PositiveIntegerField()
     unidad = models.CharField(max_length= 30, choices=unidad_insumo, blank=True)
