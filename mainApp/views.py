@@ -11,6 +11,15 @@ def home(request):
     }
     return render(request, 'home.html', data)
 
+def catalogo(request):
+    categorias = Categoria.objects.all()
+    productos = Productos.objects.all()
+    data = {
+        'categorias': categorias,
+        'productos': productos,
+    }
+    return render(request, 'catalogo.html', data)
+
 def detalle_producto(request, slug):
     producto = Productos.objects.get(slug=slug)
     data = {
