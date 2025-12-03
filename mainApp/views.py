@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.db.models import Q
 
 from mainApp.models import Categoria, Productos, Insumo, Pedido
+from mainApp.forms import FormularioPedido
 
 # Create your views here.
 
@@ -37,3 +38,21 @@ def detalle_producto(request, slug):
         'producto': producto,
     }
     return render(request, 'detalle_producto.html', data)
+
+def realizar_pedido(request):
+    if request.method == 'POST':
+        form = FormularioPedido(request.POST, request.FILES)
+        if form.is_valid():
+            pedido = form.save(commit=False)
+            pedido.plataforma = 'Web'
+            pedido.estado_pedido_actual = 'solicitado'
+            pedido.estado_pago_actual = 'pendiente'
+            pedido.save()
+
+            return render(request, 'confirmacion_pedido.html', {'pedido': pedido})
+        
+    else:
+        form = FormularioPedido()
+
+    return render(request, 'pedido_web.html', {'form': form})
+            

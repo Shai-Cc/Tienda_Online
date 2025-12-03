@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Pedido Web</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+</head>
+
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4"> Realizar Pedido</h1>
+        <form action="" method="post" enctype="multipart/form-data" class="row g-3">
+            {% csrf_token %}
+            <div class="col-md-6">
+                <label class="form-label" for="">{{ form.nombre_cliente.label }}</label>
+                {{ form.nombre_cliente }}
+                {{ form.nombre_cliente.errors }}
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label" for="">{{ form.correo_cliente.label }}</label>
+                {{ form.correo_cliente }}
+                {{ form.correo_cliente.errors }}
+
+                <div class="col-md-6">
+                    <label class="form-label" for="">{{ form.telefono_cliente.label }}</label>
+                    {{ form.telefono_cliente }}
+                    {{ form.telefono_cliente.errors }}
+
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label" for="">{{ form.cantidad_producto.label }}</label>
+                    {{ form.cantidad_producto }}
+                    {{ form.cantidad_producto.errors }}
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label" for="">{{ form.pedido_img_1.label }}</label>
+                    {{ form.pedido_img_1 }}
+                    {{ form.pedido_img_1.errors }}
+
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label" for="">{{ form.pedido_img_2.label }}</label>
+                    {{ form.pedido_img_2 }}
+                    {{ form.pedido_img_2.errors }}
+
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label" for="">{{ form.pedido_img_3.label }}</label>
+                    {{ form.pedido_img_3 }}
+                    {{ form.pedido_img_3.errors }}
+
+                </div>
+
+                <div class="col-12">
+                    <label for="" class="form-label">{{ form.notas_adicionales.label }}</label>
+                    {{ form.notas_adicionales }}
+                    {{ form.notas_adicionales.errors }}
+
+                </div>
+
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Enviar Pedido</button>
+
+                </div>
+        </form>
+
+    </div>
+
+</body>
+
+</html>
