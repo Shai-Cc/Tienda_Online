@@ -60,6 +60,8 @@ class PedidoAdmin (admin.ModelAdmin):
     list_display = ["nombre_cliente", "producto_requerido", "cantidad_producto", "plataforma", "estado_pedido_actual", "estado_pago_actual", "fecha_pedido", "fecha_entrega"]
     list_filter = ["plataforma", "estado_pedido_actual", "estado_pago_actual"]
     search_fields = ["nombre_cliente", "producto_requerido", "fecha_pedido"]
+    readonly_fields = ["token_seguimiento", "fecha_pedido"]
+    order = ["-fecha_pedido"]
 
     def vista_pedido_img_1(self, obj):
         if obj.pedido_img_1:
@@ -90,3 +92,21 @@ class PedidoAdmin (admin.ModelAdmin):
             "fields": ("token_seguimiento",),
         }),
     )
+
+    @admin.action(description="Marcar pedidos seleccionados como En Proceso")
+    def marcar_en_proceso(self, request, queryset):
+        queryset.update(estado_pedido_actual='en_proceso')
+
+    @admin.action(description="Marcar pedidos seleccionados como Entregados")
+    def marcar_entregada(self, request, queryset):
+        queryset.update(estado_pedido_actual='entregada')
+
+    @admin.action(description="Marcar pedidos seleccionados como Finalizado")
+    def marcar_finalizado(self, request, queryset):
+        queryset.update(estado_pedido_actual='finalizado')
+
+    @admin.action(description="Marcar pedidos seleccionados como Pagados")
+    def marcar_pagado(self, request, queryset):
+        queryset.update(estado_pago_actual='pagado')
+
+    actions = [marcar_en_proceso, marcar_entregada, marcar_finalizado, marcar_pagado]
