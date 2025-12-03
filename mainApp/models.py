@@ -118,5 +118,9 @@ class Pedido(models.Model):
         unique=True)
 
     def __str__(self):
-        return f"Pedido #{self.id} de {self.nombre_cliente} - {self.producto_requerido.nombre} - (Origen: {self.plataforma})"
+        if self.producto_requerido:
+            producto = self.producto_requerido.nombre
+        else:
+            producto = "Sin producto"
+        return f"Pedido #{self.id} de {self.nombre_cliente} - {producto} - (Origen: {self.plataforma})"
     
