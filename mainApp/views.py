@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.db.models import Q
 
 from mainApp.models import Categoria, Productos, Insumo, Pedido
 
@@ -14,9 +15,19 @@ def home(request):
 def catalogo(request):
     categorias = Categoria.objects.all()
     productos = Productos.objects.all()
+
+    categoria_slug = request.GET.get('categoria')
+    busqueda = request.GET.get('q')
+    if categoria_slug:
+        productos = productos.filter(categoria__slug=categoria_slug)
+    if busqueda:
+        productos = productos.filter(Q(nombre__icontains=busqueda) | Q(descripcion__icontains=busqueda))
+
     data = {
         'categorias': categorias,
         'productos': productos,
+        'categoria_seleccionada': categoria_slug,
+        'busqueda': busqueda,
     }
     return render(request, 'catalogo.html', data)
 
