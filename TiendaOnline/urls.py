@@ -27,6 +27,7 @@ urlpatterns = [
     path('catalogo/', views.catalogo, name='catalogo'),
     path('producto/<slug:slug>/', views.detalle_producto, name='detalle_producto'),
     path('pedidoWeb/', views.realizar_pedido, name='pedido_web'),
+    path('seguimientoPedido/', views.seguimiento_pedido, name='seguimiento_pedido'),
 ]
 
 if settings.DEBUG:

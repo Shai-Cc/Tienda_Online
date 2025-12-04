@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.db.models import Q
 
 from mainApp.models import Categoria, Productos, Insumo, Pedido
-from mainApp.forms import FormularioPedido
+from mainApp.forms import FormularioPedido, SeguimientoPedidoForm
 
 # Create your views here.
 
@@ -55,4 +55,29 @@ def realizar_pedido(request):
         form = FormularioPedido()
 
     return render(request, 'pedido_web.html', {'form': form})
+
+def seguimiento_pedido(request):
+    pedido = None
+    token_ingresado = None
+    error = None
+
+    if request.method == 'POST':
+        form = SeguimientoPedidoForm(request.POST)
+        if form.is_valid():
+            token_ingresado = form.cleaned_data['token_seguimiento']
+            try:
+                pedido = Pedido.objects.get(token_seguimiento=token_ingresado)
+            except Pedido.DoesNotExist:
+                error = "No se encontró ningún pedido con ese número de seguimiento."
+
+    else:
+            form = SeguimientoPedidoForm()
+
+    data = {
+        'form': form,
+        'pedido': pedido,
+        'token_ingresado': token_ingresado,
+        'error': error,
+    }
+    return render(request, 'seguimiento_pedido.html', data)
             

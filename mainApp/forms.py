@@ -24,3 +24,10 @@ class FormularioPedido(forms.ModelForm):
             "cantidad_producto": forms.NumberInput(attrs={'class': 'form-control'}),
             "notas_adicionales": forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
         }
+
+class SeguimientoPedidoForm(forms.Form):
+    token_seguimiento = forms.UUIDField(
+        label='Número de pedido',
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': 'Ingrese su número de pedido'})
+    )
