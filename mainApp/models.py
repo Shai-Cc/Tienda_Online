@@ -106,8 +106,8 @@ class Pedido(models.Model):
     ]
 
     plataforma = models.CharField(choices= plataforma_pedido, max_length= 30)
-    estado_pedido_actual = models.CharField (choices= estado_pedido, max_length= 30)
-    estado_pago_actual = models.CharField(choices=estado_pago, max_length=30 )
+    estado_pedido_actual = models.CharField (choices= estado_pedido, max_length= 30, default="solicitado")
+    estado_pago_actual = models.CharField(choices=estado_pago, max_length=30, default="pendiente")
     fecha_pedido = models.DateTimeField(auto_now_add=True)
     fecha_entrega = models.DateField(null=True, blank=True)
     notas_adicionales = models.TextField(blank=True, null=True)

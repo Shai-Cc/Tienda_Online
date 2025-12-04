@@ -57,11 +57,12 @@ class InsumoAdmin (admin.ModelAdmin):
 
 @admin.register(Pedido)
 class PedidoAdmin (admin.ModelAdmin):
-    list_display = ["nombre_cliente", "producto_requerido", "cantidad_producto", "plataforma", "estado_pedido_actual", "estado_pago_actual", "fecha_pedido", "fecha_entrega"]
+    list_display = ["id","fecha_pedido", "nombre_cliente", "producto_requerido", "cantidad_producto", "plataforma", "estado_pedido_actual", "estado_pago_actual",  "fecha_entrega"]
     list_filter = ["plataforma", "estado_pedido_actual", "estado_pago_actual"]
-    search_fields = ["nombre_cliente", "producto_requerido", "fecha_pedido"]
-    readonly_fields = ["token_seguimiento", "fecha_pedido"]
+    search_fields = ["nombre_cliente", "producto_requerido", "fecha_pedido", "token_seguimiento"]
+    readonly_fields = ["token_seguimiento", "fecha_pedido", "id"]
     order = ["-fecha_pedido"]
+    list_editable = ["estado_pedido_actual", "estado_pago_actual"]
 
     def vista_pedido_img_1(self, obj):
         if obj.pedido_img_1:
@@ -83,19 +84,29 @@ class PedidoAdmin (admin.ModelAdmin):
             "fields": ("nombre_cliente", "correo_cliente", "telefono_cliente"),
         }),
         ("Detalle del Pedido", {
-            "fields": ("producto_requerido", "cantidad_producto", "plataforma", "estado_pedido_actual", "estado_pago_actual", "fecha_pedido", "fecha_entrega", "notas_adicionales"),
+            "fields": ("producto_requerido", "cantidad_producto", "plataforma", "fecha_pedido", "fecha_entrega", "notas_adicionales"),
         }),
         ("Imágenes del Pedido", {
             "fields": ("pedido_img_1", "pedido_img_2", "pedido_img_3"),
+        }),
+        ('Estados del Pedido y Pago', {
+            "fields": ("estado_pedido_actual", "estado_pago_actual",),
         }),
         ("Seguimiento", {
             "fields": ("token_seguimiento",),
         }),
     )
-
     @admin.action(description="Marcar pedidos seleccionados como En Proceso")
     def marcar_en_proceso(self, request, queryset):
         queryset.update(estado_pedido_actual='en_proceso')
+
+    @admin.action(description="Marcar pedidos seleccionados como Aprobdado")
+    def marcar_aprobado(self, request, queryset):
+        queryset.update(estado_pedido_actual='aprobado')
+
+    @admin.action(description="Marcar pedidos seleccionados como Realizada")
+    def marcar_realizada(self, request, queryset):
+        queryset.update(estado_pedido_actual='realizada')
 
     @admin.action(description="Marcar pedidos seleccionados como Entregados")
     def marcar_entregada(self, request, queryset):
@@ -109,4 +120,20 @@ class PedidoAdmin (admin.ModelAdmin):
     def marcar_pagado(self, request, queryset):
         queryset.update(estado_pago_actual='pagado')
 
-    actions = [marcar_en_proceso, marcar_entregada, marcar_finalizado, marcar_pagado]
+    @admin.action(description="Marcar pedidos seleccionados como Parcialmente Pagados")
+    def marcar_parcial(self, request, queryset):
+        queryset.update(estado_pago_actual='parcial')
+
+    @admin.action(description="Marcar pedidos seleccionados como Pagado")
+    def marcar_pagado(self, request, queryset):
+        queryset.update(estado_pago_actual='pagado')
+
+    
+    actions = [marcar_en_proceso, marcar_entregada, marcar_finalizado, marcar_parcial, marcar_pagado]
+
+    bloquear_campos = ('nombre_cliente', 'correo_cliente', 'telefono_cliente', 'producto_requerido', 'cantidad_producto', 'plataforma', 'fecha_pedido', 'token_seguimiento')
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj and obj.estado_pedido_actual in ['finalizada', 'cancelada']:
+            return self.readonly_fields + self.bloquear_campos
+        return self.readonly_fields
