@@ -34,6 +34,10 @@
                 <p class="mb-0">
                     Guarda este número para hacer seguimiento de tu pedido.
                 </p>
+                <button id="btnCopiar" class="btn btn-outline-secondary btn-sm mt-3" onclick="navigator.clipboard.writeText('{{ pedido.token_seguimiento }}');">
+                    Copiar código
+
+                </button>
 
             </div>
             <a href="{% url 'catalogo' %}" class="btn btn-secondary">
