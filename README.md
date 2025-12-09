@@ -40,7 +40,7 @@ Virtualenv (opcional pero recomendado)
 
 Sigue estos pasos para levantar el proyecto localmente:
 
-1️⃣ Clonar el repositorio git clone https://github.com/tu_usuario/tu_proyecto.git cd tu_proyecto
+1️⃣ Clonar el repositorio git clone https://github.com/Shai-Cc/Tienda_Online.git cd TiendaOnline
 
 2️⃣ Crear un entorno virtual (opcional, recomendado) python -m venv venv
 
