@@ -1,4 +1,5 @@
-from django.contrib import admin
+from django.contrib import admin, messages
+from django.core.exceptions import ValidationError
 from .models import Categoria, Productos, Insumo, Pedido
 from django.utils.html import format_html
 
@@ -61,8 +62,7 @@ class PedidoAdmin (admin.ModelAdmin):
     list_filter = ["plataforma", "estado_pedido_actual", "estado_pago_actual"]
     search_fields = ["nombre_cliente", "producto_requerido", "fecha_pedido", "token_seguimiento"]
     readonly_fields = ["token_seguimiento", "fecha_pedido", "id"]
-    order = ["-fecha_pedido"]
-    list_editable = ["estado_pedido_actual", "estado_pago_actual"]
+    ordering = ["-fecha_pedido"]
 
     def vista_pedido_img_1(self, obj):
         if obj.pedido_img_1:
@@ -112,10 +112,6 @@ class PedidoAdmin (admin.ModelAdmin):
     def marcar_entregada(self, request, queryset):
         queryset.update(estado_pedido_actual='entregada')
 
-    @admin.action(description="Marcar pedidos seleccionados como Finalizado")
-    def marcar_finalizado(self, request, queryset):
-        queryset.update(estado_pedido_actual='finalizado')
-
     @admin.action(description="Marcar pedidos seleccionados como Pagados")
     def marcar_pagado(self, request, queryset):
         queryset.update(estado_pago_actual='pagado')
@@ -128,8 +124,24 @@ class PedidoAdmin (admin.ModelAdmin):
     def marcar_pagado(self, request, queryset):
         queryset.update(estado_pago_actual='pagado')
 
+    @admin.action(description="Marcar pedidos seleccionados como Finalizado")
+    def marcar_finalizado(self, request, queryset):
+        ok = 0
+        errores = 0
+        for pedido in queryset:
+            try:
+                pedido.marcar_finalizado()
+                ok += 1
+            except ValidationError():
+                errores += 1
+
+        if ok:
+            self.message_user(request, f"{ok} pedido(s) marcado(s) como finalizado(s).", messages.SUCCESS)
+
+        if errores:
+            self.message_user(request, f"{errores} pedido(s) no pudieron ser marcados como finalizado(s) debido a que no cumplen los requisitos.", messages.WARNING)
     
-    actions = [marcar_en_proceso, marcar_entregada, marcar_finalizado, marcar_parcial, marcar_pagado]
+    actions = [marcar_en_proceso, marcar_aprobado, marcar_realizada, marcar_entregada, marcar_finalizado, marcar_parcial, marcar_pagado]
 
     bloquear_campos = ('nombre_cliente', 'correo_cliente', 'telefono_cliente', 'producto_requerido', 'cantidad_producto', 'plataforma', 'fecha_pedido', 'token_seguimiento')
 

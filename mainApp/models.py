@@ -1,5 +1,6 @@
 from django.db import models
 import uuid
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 class Categoria(models.Model):
@@ -124,3 +125,14 @@ class Pedido(models.Model):
             producto = "Sin producto"
         return f"Pedido #{self.id} de {self.nombre_cliente} - {producto} - (Origen: {self.plataforma})"
     
+    def puede_finalizar(self):
+        return (
+            self.estado_pedido_actual == 'entregada' and 
+            self.estado_pago_actual == 'pagado'
+        )
+
+    def marcar_finalizado(self):
+        if not self.puede_finalizar():
+            raise ValidationError("El pedido no cumple con los requisitos para ser finalizado.")
+        self.estado_pedido_actual = 'finalizada'
+        self.save()
