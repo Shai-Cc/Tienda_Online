@@ -1,6 +1,6 @@
 from django.contrib import admin, messages
 from django.core.exceptions import ValidationError
-from .models import Categoria, Productos, Insumo, Pedido
+from .models import Categoria, Productos, Insumo, Pedido, Contacto
 from django.utils.html import format_html
 
 
@@ -149,3 +149,22 @@ class PedidoAdmin (admin.ModelAdmin):
         if obj and obj.estado_pedido_actual in ['finalizada', 'cancelada']:
             return self.readonly_fields + self.bloquear_campos
         return self.readonly_fields
+    
+class ContactoAdmin (admin.ModelAdmin):
+    list_display = ["nombre", "correo", "telefono", "asunto", "fecha_envio", "respondido"]
+    list_filter = ["respondido", "asunto"]
+    search_fields = ["nombre", "correo", "mensaje", "fecha_envio"]
+    readonly_fields = ["nombre", "correo", "telefono", "asunto", "mensaje", "fecha_envio"]
+    ordering = ["-fecha_envio"]
+
+    fieldsets = (
+        ("Remitente", {
+            "fields": ("nombre", "correo", "telefono"),
+        }),
+        ("Contenido", {
+            "fields": ("asunto", "mensaje"),
+        }),
+        ("Estado", {
+            "fields": ("fecha_envio", "respondido"),
+        }),
+    )     

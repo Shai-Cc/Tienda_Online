@@ -1,6 +1,7 @@
 from django.db import models
 import uuid
 from django.core.exceptions import ValidationError
+from django.conf import settings
 
 # Create your models here.
 class Categoria(models.Model):
@@ -138,3 +139,31 @@ class Pedido(models.Model):
             raise ValidationError("El pedido no cumple con los requisitos para ser finalizado.")
         self.estado_pedido_actual = 'finalizada'
         self.save()
+
+class Contacto(models.Model):
+    usuario = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True
+    )
+
+    asunto_options = [
+        ("consulta_general", "Consulta General"),
+        ("soporte_tecnico", "Soporte Técnico"),
+        ("problemas_con_pedido", "Problemas con el Pedido"),
+        ("problemas_de_pago", "Problemas de Pago"),
+        ("problemas_de_envio", "Problemas de Envío"),
+        ("pedido_no_recibido", "Pedido No Recibido"),
+        ("reclamo", "Reclamo"),
+        ("sugerencia", "Sugerencia"),
+        ("otro", "Otro"),
+    ]
+
+    nombre = models.CharField(max_length=120)
+    correo = models.EmailField()
+    telefono = models.CharField(max_length=20, blank=True, null=True)
+    asunto = models.CharField(max_length=250, choices=asunto_options)
+    mensaje = models.TextField()
+    fecha_envio = models.DateTimeField(auto_now_add=True)
+    respondido = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Mensaje de {self.nombre} - Asunto: {self.asunto}"
