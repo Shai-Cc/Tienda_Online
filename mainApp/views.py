@@ -78,4 +78,7 @@ def seguimiento_pedido(request):
         'error': error,
     }
     return render(request, 'seguimiento_pedido.html', data)
+
+
+
             

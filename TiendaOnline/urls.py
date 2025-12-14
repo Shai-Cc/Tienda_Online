@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
+from mainApp import login_views
 
 from mainApp import views
 
@@ -28,6 +29,9 @@ urlpatterns = [
     path('producto/<slug:slug>/', views.detalle_producto, name='detalle_producto'),
     path('pedidoWeb/', views.realizar_pedido, name='pedido_web'),
     path('seguimientoPedido/', views.seguimiento_pedido, name='seguimiento_pedido'),
+    path('login/', login_views.login_view, name='login'),
+    path('logout/', login_views.logout_view, name='logout'),
+    path('registro/', login_views.registro_view, name='registro'),
 ]
 
 if settings.DEBUG:
