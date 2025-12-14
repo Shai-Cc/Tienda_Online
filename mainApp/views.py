@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 
 from mainApp.models import Categoria, Productos, Insumo, Pedido
@@ -31,11 +31,8 @@ def catalogo(request):
     return render(request, 'catalogo.html', data)
 
 def detalle_producto(request, slug):
-    producto = Productos.objects.get(slug=slug)
-    data = {
-        'producto': producto,
-    }
-    return render(request, 'detalle_producto.html', data)
+    producto = get_object_or_404(Productos, slug=slug)
+    return render(request, 'detalle_producto.html', {'producto': producto})
 
 def realizar_pedido(request):
     if request.method == 'POST':

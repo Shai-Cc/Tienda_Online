@@ -23,22 +23,17 @@ def login_view(request):
 def registro_view(request):
     if request.user.is_authenticated:
         return redirect('home')
-    
+
+    form = UserCreationForm(request.POST or None)
+
     if request.method == 'POST':
-        if request.user.is_authenticated:
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, "Registro exitoso. ¡Bienvenido!")
             return redirect('home')
-        
-        if request.method == 'POST':
-            form = UserCreationForm(request.POST)
-            if form.is_valid():
-                user = form.save()
-                login(request, user)
-                messages.success(request, "Registro exitoso. ¡Bienvenido!")
-                return redirect('home')
-            else:
-                messages.error(request, "Error al registrarse. Por favor, corrige los errores.")
-    else:
-        form = UserCreationForm()
+        else:
+            messages.error(request, "Error al registrarse. Revisa los campos.")
 
     return render(request, 'login/registro.html', {'form': form})
 
