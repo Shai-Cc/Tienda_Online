@@ -132,7 +132,7 @@ class PedidoAdmin (admin.ModelAdmin):
             try:
                 pedido.marcar_finalizado()
                 ok += 1
-            except ValidationError():
+            except ValidationError:
                 errores += 1
 
         if ok:

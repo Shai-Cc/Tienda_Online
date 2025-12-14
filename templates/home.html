@@ -1,60 +1,47 @@
-<!doctype html>
-<html lang="en">
+{% extends "base.html" %}
+{% block title %}Inicio | NexoStore {% endblock %}
 
-<head>
-    <title>Title</title>
-    <!-- Required meta tags -->
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-
-    <!-- Bootstrap CSS v5.2.1 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
-
-    <style>
-        .img-producto {
-            height: 200px;
-            object-fit: cover;
-        }
-    </style>
-    
-    </head>
-
-<body class="container mt-2">
-    <div class=" alert alert-info text-center" role="alert">
-        <h4 class="alert-heading">Tienda Online</h4>
+{% block content %}
+<div class="p-4 p-md-5 mb-4 rounded bg-light">
+    <div class="col-lg-8">
+        <h1 class="display-6 fw-bold">Bienvenida a NexoStore</h1>
+        <p class="lead">Explora productos, realiza tu pedido y haz seguimiento por token.</p>
+        <a class="btn btn-primary btn-lg" href="{% url 'catalogo' %}">Ver catálogo</a>
     </div>
+</div>
 
-    <div class="row justify-content-center">
-        {% for producto in productos %}
-        <div class="col-4 md-4">
-            <div class="card h-100 shadow-sm">
+<h3 class="mb-3">Destacados</h3>
 
-                {% if producto.imagen1 %}
-                <img src="{{ producto.imagen1.url }}" class="card-img-top img-producto" alt="{{ producto.nombre }}">
+{% if destacados %}
+<div id="carouselDestacados" class="carousel slide mb-5" data-bs-ride="carousel">
+    <div class="carousel-inner">
+
+        {% for p in destacados %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <div class="card shadow-sm">
+                {% if p.imagen1 %}
+                <img src="{{ p.imagen1.url }}" class="d-block w-100" style="height: 380px; object-fit: cover;"
+                    alt="{{ p.nombre }}">
                 {% endif %}
-
                 <div class="card-body">
-                    <h5 class="card-title">{{ producto.nombre }}</h5>
-                    <p class="card-text text-muted mb-1">
-                        {{ producto.categoria.nombre }}
-                    </p>
-                    <p class="card-text fw-bold mb-3">
-                        Precio: ${{ producto.precio_base }}
-                    </p>
-
-                    <a href="{% url 'detalle_producto' producto.slug %}" class="btn btn-primary mt-auto">
-                        Ver producto
-                    </a>
+                    <h5 class="card-title">{{ p.nombre }}</h5>
+                    <p class="card-text text-muted">{{ p.categoria.nombre }}</p>
+                    <a class="btn btn-outline-primary" href="{% url 'detalle_producto' p.slug %}">Ver producto</a>
                 </div>
-
             </div>
-
         </div>
-        {% empty %}
-        <p class="text-center">No hay productos disponibles.</p>
         {% endfor %}
-    </div>
-</body>
 
-</html>
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselDestacados" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselDestacados" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </button>
+</div>
+{% else %}
+<p class="text-muted">Aún no hay productos destacados.</p>
+{% endif %}
+{% endblock %}

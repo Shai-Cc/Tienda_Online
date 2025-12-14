@@ -20,6 +20,8 @@ class Productos(models.Model):
     imagen1 = models.ImageField(upload_to='productos/')
     imagen2 = models.ImageField(upload_to='productos/', null=True, blank=True)
     imagen3 = models.ImageField(upload_to='productos/', null=True, blank=True)
+    es_destacado = models.BooleanField(default=False)
+
 
     def __str__(self):
         return self.nombre

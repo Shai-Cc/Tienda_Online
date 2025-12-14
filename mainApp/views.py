@@ -7,11 +7,9 @@ from mainApp.forms import FormularioPedido, SeguimientoPedidoForm
 # Create your views here.
 
 def home(request):
-    productos = Productos.objects.all()
-    data = {
-        'productos': productos,
-    }
-    return render(request, 'home.html', data)
+    destacados = Productos.objects.filter(es_destacado=True)[:8]
+    return render(request, "home.html", {"destacados": destacados})
+
 
 def catalogo(request):
     categorias = Categoria.objects.all()
