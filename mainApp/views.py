@@ -1,8 +1,9 @@
+from django.contrib import messages
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 
 from mainApp.models import Categoria, Productos, Insumo, Pedido
-from mainApp.forms import FormularioPedido, SeguimientoPedidoForm
+from mainApp.forms import FormularioPedido, SeguimientoPedidoForm, ContactoForm
 
 # Create your views here.
 
@@ -77,5 +78,28 @@ def seguimiento_pedido(request):
     return render(request, 'seguimiento_pedido.html', data)
 
 
+def contacto(request):
+    initial = {}
 
-            
+    if request.user.is_authenticated:
+        initial = {"nombre": request.user.get_username()}
+        if getattr(request.user, 'email', None):
+            initial['correo'] = request.user.email
+
+    if request.method == 'POST':
+        form = ContactoForm(request.POST)
+        if form.is_valid():
+            contacto_obj = form.save(commit=False)
+            if request.user.is_authenticated:
+                contacto_obj.usuario = request.user
+            contacto_obj.save()
+
+            messages.success(request, "Su mensaje ha sido enviado con éxito. ¡Pronto serás contactado!")
+            return render(request, "confirmacion_contacto.html", {"contacto": contacto_obj})
+        else:
+            messages.error(request, "Por favor corrija los errores en el formulario.")
+
+    else:
+        form = ContactoForm(initial=initial)
+
+    return render(request, "contactForm.html", {"form": form})

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Contacto · NexoStore{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h1 class="h3 mb-3">Contacto</h1>
+                <p class="text-muted mb-4">Envíanos tu consulta y te responderemos lo antes posible.</p>
+
+                <form method="post" novalidate>
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+                    {% endif %}
+
+                    <div class="mb-3">
+                        <label class="form-label">Nombre</label>
+                        {{ form.nombre }}
+                        {% for e in form.nombre.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Correo</label>
+                        {{ form.correo }}
+                        {% for e in form.correo.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Teléfono (opcional)</label>
+                        {{ form.telefono }}
+                        {% for e in form.telefono.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Asunto</label>
+                        {{ form.asunto }}
+                        {% for e in form.asunto.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Mensaje</label>
+                        {{ form.mensaje }}
+                        {% for e in form.mensaje.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+                    </div>
+
+                    <button class="btn btn-primary w-100" type="submit">Enviar</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Pedido
+from .models import Pedido, Contacto
 
 class FormularioPedido(forms.ModelForm):
     class Meta:
@@ -31,3 +31,22 @@ class SeguimientoPedidoForm(forms.Form):
         widget=forms.TextInput(
             attrs={'class': 'form-control', 'placeholder': 'Ingrese su número de pedido'})
     )
+
+class ContactoForm(forms.ModelForm):
+    class Meta:
+        model = Contacto
+        fields = [
+            'nombre',
+            'correo',
+            'telefono',
+            'asunto',
+            'mensaje',
+        ]
+
+        widgets = {
+            "nombre": forms.TextInput(attrs={'class': 'form-control'}),
+            "correo": forms.EmailInput(attrs={'class': 'form-control'}),
+            "telefono": forms.TextInput(attrs={'class': 'form-control'}),
+            "asunto": forms.Select(attrs={'class': 'form-control'}),
+            "mensaje": forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
+        }
