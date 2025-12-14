@@ -149,7 +149,7 @@ class PedidoAdmin (admin.ModelAdmin):
         if obj and obj.estado_pedido_actual in ['finalizada', 'cancelada']:
             return self.readonly_fields + self.bloquear_campos
         return self.readonly_fields
-    
+@admin.register(Contacto)    
 class ContactoAdmin (admin.ModelAdmin):
     list_display = ["nombre", "correo", "telefono", "asunto", "fecha_envio", "respondido"]
     list_filter = ["respondido", "asunto"]
