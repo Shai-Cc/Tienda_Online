@@ -19,10 +19,11 @@ class CategoriaAdmin (admin.ModelAdmin):
 
 @admin.register(Productos)
 class ProductosAdmin (admin.ModelAdmin):
-    list_display = ["nombre","slug", "categoria", "descripcion", "precio_base", "vista_imagen1", "vista_imagen2", "vista_imagen3"]
+    list_display = ["es_destacado", "nombre","slug", "categoria", "descripcion", "precio_base", "vista_imagen1", "vista_imagen2", "vista_imagen3"]
     prepopulated_fields = {"slug": ["nombre"]}
-    list_filter = ["categoria",]
+    list_filter = ["categoria", "es_destacado"]
     search_fields = ["nombre",]
+
 
     def vista_imagen1(self, obj):
         if obj.imagen1:
@@ -47,6 +48,14 @@ class ProductosAdmin (admin.ModelAdmin):
             'fields': ('imagen1', 'imagen2', 'imagen3'),
         }),
     )
+
+    @admin.action(description="Marcar productos seleccionados como Destacados")
+    def marcar_destacado(self, request, queryset):
+        queryset.update(es_destacado=True)
+
+    @admin.action(description="Desmarcar productos seleccionados como Destacados")
+    def desmarcar_destacado(self, request, queryset):
+        queryset.update(es_destacado=False)
 
 @admin.register(Insumo)
 class InsumoAdmin (admin.ModelAdmin):

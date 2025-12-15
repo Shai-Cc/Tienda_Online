@@ -16,17 +16,17 @@
 <div id="carouselDestacados" class="carousel slide mb-5" data-bs-ride="carousel">
     <div class="carousel-inner">
 
-        {% for p in destacados %}
+        {% for producto in destacados %}
         <div class="carousel-item {% if forloop.first %}active{% endif %}">
             <div class="card shadow-sm">
-                {% if p.imagen1 %}
-                <img src="{{ p.imagen1.url }}" class="d-block w-100" style="height: 380px; object-fit: cover;"
-                    alt="{{ p.nombre }}">
+                {% if producto.imagen1 %}
+                <img src="{{ producto.imagen1.url }}" class="d-block w-100" style="height: 380px; object-fit: cover;"
+                    alt="{{ producto.nombre }}">
                 {% endif %}
                 <div class="card-body">
-                    <h5 class="card-title">{{ p.nombre }}</h5>
-                    <p class="card-text text-muted">{{ p.categoria.nombre }}</p>
-                    <a class="btn btn-outline-primary" href="{% url 'detalle_producto' p.slug %}">Ver producto</a>
+                    <h5 class="card-title">{{ producto.nombre }}</h5>
+                    <p class="card-text text-muted">{{ producto.categoria.nombre }}</p>
+                    <a class="btn btn-outline-primary" href="{% url 'detalle_producto' producto.slug %}">Ver producto</a>
                 </div>
             </div>
         </div>
