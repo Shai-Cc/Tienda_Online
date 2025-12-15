@@ -29,6 +29,11 @@
                     <li class="nav-item"><a class="nav-link" href="{% url 'catalogo' %}">Catálogo</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'seguimiento_pedido' %}">Seguimiento</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'contacto' %}">Contacto</a></li>
+                    {% if user.is_staff %}
+                    <li class="nav-item">
+                        <a class="btn btn-outline-info navbar-text btn-sm" href="/admin/">Panel Admin</a>
+                    </li>
+                    {% endif %}
 
                 </ul>
 
@@ -36,7 +41,7 @@
                     {% if user.is_authenticated %}
                     <li class="nav-item"><span class="navbar-text me-2">Hola, {{ user.username }}</span></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Salir</a></li>
-                    
+
                     {% else %}
                     <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
                     <li class="nav-item"><a class="btn btn-outline-light ms-2" href="{% url 'registro' %}">Registro</a>
