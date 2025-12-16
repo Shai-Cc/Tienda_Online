@@ -15,7 +15,7 @@ class DetallePedidoSerializer(serializers.ModelSerializer):
         model = Pedido
         fields = [
             'id',
-            'token_seguimiento',
+            'token_seguimiento',  
             'fecha_pedido',
             'nombre_cliente',
             'correo_cliente',
