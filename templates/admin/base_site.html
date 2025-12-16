@@ -1,0 +1,11 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'home' %}">
+        <img src="{% static 'logo/img/black_logo.png' %}" alt="NexoStore" height="40" style="vertical-align:middle;">
+        <span style="margin-left:8px;">Panel Admin</span>
+    </a>
+</h1>
+{% endblock %}

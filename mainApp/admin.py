@@ -3,6 +3,10 @@ from django.core.exceptions import ValidationError
 from .models import Categoria, Productos, Insumo, Pedido, Contacto
 from django.utils.html import format_html
 
+admin.site.site_header = "NexoStore - Panel Admin"
+admin.site.site_title = "NexoStore Admin"
+admin.site.index_title = "Administración"
+
 
 # Register your models here.
 
@@ -19,10 +23,12 @@ class CategoriaAdmin (admin.ModelAdmin):
 
 @admin.register(Productos)
 class ProductosAdmin (admin.ModelAdmin):
-    list_display = ["es_destacado", "nombre","slug", "categoria", "descripcion", "precio_base", "vista_imagen1", "vista_imagen2", "vista_imagen3"]
+    list_display = [ "nombre", "es_destacado", "slug", "categoria", "descripcion", "precio_base", "vista_imagen1", "vista_imagen2", "vista_imagen3"]
     prepopulated_fields = {"slug": ["nombre"]}
     list_filter = ["categoria", "es_destacado"]
     search_fields = ["nombre",]
+    list_editable = ["es_destacado",]
+    list_display_links = ["nombre", "slug"]
 
 
     def vista_imagen1(self, obj):

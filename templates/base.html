@@ -11,7 +11,7 @@
     {% block extra_css %}{% endblock %}
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
     {% load static %}
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -52,7 +52,7 @@
         </div>
     </nav>
 
-    <main class="container my-4">
+    <main class="container my-4 flex-grow-1">
         {% if messages %}
         {% for message in messages %}
         <div class="alert alert-{{ message.tags }} mb-3">{{ message }}</div>
@@ -62,7 +62,7 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="bg-dark text-light py-4 mt-5">
+    <footer class="bg-dark text-light py-4 mt-auto">
         <div class="container text-center small">
             <div class="mb-2">© {{ now|date:"Y" }} NexoStore · Todos los derechos reservados</div>
             <div>Contacto: contacto@nexostore.cl · Instagram · Facebook</div>
