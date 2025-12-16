@@ -130,7 +130,6 @@ class Pedido(models.Model):
     
     def puede_finalizar(self):
         return (
-            self.estado_pedido_actual == 'entregada' and 
             self.estado_pago_actual == 'pagado'
         )
 
