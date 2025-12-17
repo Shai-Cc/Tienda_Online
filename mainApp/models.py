@@ -80,7 +80,7 @@ class Pedido(models.Model):
     telefono_cliente = models.CharField(max_length=20, blank=True, null=True)
     producto_requerido = models.ForeignKey(Productos, on_delete=models.SET_NULL, blank=True, null=True)
     cantidad_producto = models.PositiveIntegerField()
-    pedido_img_1 = models.ImageField(upload_to='pedidos/', null=True, blank=True)
+    pedido_img_1 = models.ImageField(upload_to='pedidos/', null=False, blank=False)
     pedido_img_2 = models.ImageField(upload_to='pedidos/', null=True, blank=True)
     pedido_img_3 = models.ImageField(upload_to='pedidos/', null=True, blank=True)
     
@@ -89,7 +89,7 @@ class Pedido(models.Model):
         ("instagram","Instagram"),
         ("facebook", "Facebook"),
         ("presencial", "Presencial"),
-        ("web", "Página Web"),
+        ("Web", "Página Web"),
         ("otro", "Otro")
     ]
 

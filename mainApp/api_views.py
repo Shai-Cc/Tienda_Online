@@ -20,6 +20,11 @@ class InsumoViewSet(viewsets.ModelViewSet):
     filterset_fields = ['tipo', 'unidad', 'color', 'marca']
     search_fields = ['nombre', 'marca', 'slug']
     ordering_fields = ['id', 'nombre', 'cantidad', 'marca']
+
+    def get_permissions(self):
+        if self.action in ['list', 'retrieve']:
+            return [AllowAny()]
+        return [IsAdminUser()]
     
 class PedidoViewSet(viewsets.ModelViewSet):
     queryset = Pedido.objects.all().order_by("-fecha_pedido")
@@ -39,7 +44,7 @@ class PedidoViewSet(viewsets.ModelViewSet):
         if self.action == 'create':
             return [AllowAny()]
         
-        if self.action == 'seguimiento':
+        if self.action == ['create', 'seguimiento']:
             return [AllowAny()] 
         
         return [IsAdminUser()]
