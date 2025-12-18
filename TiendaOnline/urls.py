@@ -39,6 +39,8 @@ urlpatterns = [
     path('registro/', login_views.registro_view, name='registro'),
     path('contacto/', views.contacto, name='contacto'),
     path('api/', include('mainApp.api_urls')),
+    path('reporteSistema/', views.reporte_sistema, name='reporte_sistema'),
+
 
 ]
 

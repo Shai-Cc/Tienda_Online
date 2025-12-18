@@ -1,9 +1,12 @@
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404
-from django.db.models import Q
+from django.db.models import Q, Count
+from django.utils.dateparse import parse_date
+
 
 from mainApp.models import Categoria, Productos, Insumo, Pedido
 from mainApp.forms import FormularioPedido, SeguimientoPedidoForm, ContactoForm
+from django.contrib.admin.views.decorators import staff_member_required
 
 # Create your views here.
 
@@ -103,3 +106,34 @@ def contacto(request):
         form = ContactoForm(initial=initial)
 
     return render(request, "contactForm.html", {"form": form})
+
+@staff_member_required
+def reporte_sistema (request):
+    desde = parse_date(request.GET.get("desde", "")) 
+    hasta = parse_date(request.GET.get("hasta", ""))
+
+    qs = Pedido.objects.all()
+
+    if desde:
+        qs = qs.filter(fecha_pedido__date__gte=desde)
+    if hasta:
+        qs = qs.filter(fecha_pedido__date__lte=hasta)
+
+    por_estado = list(
+        qs.values("estado_pedido_actual")
+        .annotate(total=Count("id"))
+        .order_by("estado_pedido_actual")
+    )
+
+    por_pago = list(
+        qs.values("estado_pago_actual")
+        .annotate(total=Count("id"))
+        .order_by("estado_pago_actual")
+    )
+
+    return render(request, "reporte_sistema.html", {
+        "desde": request.GET.get("desde", ""),
+        "hasta": request.GET.get("hasta", ""),
+        "por_estado": por_estado,
+        "por_pago": por_pago,
+    })

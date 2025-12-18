@@ -59,7 +59,7 @@
                     </div>
 
                     <div class="card-body">
-                        <p class="mb-1"> <strong>Cliente:</strong> {{ pedido.cliente }}</p>
+                        <p class="mb-1"> <strong>Cliente:</strong> {{ pedido.nombre_cliente }}</p>
                         <p class="mb-1"> <strong>Correo:</strong> {{ pedido.correo_cliente }}</p>
 
                         <p>
@@ -77,14 +77,14 @@
                             <strong>Plataforma:</strong> {{ pedido.plataforma }}
                         </p>
                         <p>
-                            <strong>Estado del Pedido:</strong> {{ pedido.get_estado_actual }}
+                            <strong>Estado del Pedido:</strong> {{ pedido.estado_pedido_actual }}
                         </p>
                         <p class="mb-1">
                             <strong>Estado de pago:</strong> {{ pedido.estado_pago_actual }}
                         </p>
                         <p class="mb-1">
                             <strong>Fecha de solicitud:</strong>
-                            {{ pedido.fecha_solicitud|date:"d/m/Y H:i" }}
+                            {{ pedido.fecha_pedido|date:"d/m/Y H:i" }}
                         </p>
                         {% if pedido.fecha_entrega %}
                         <p class="mb-1">
